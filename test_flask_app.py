@@ -1,5 +1,7 @@
 import pytest
 from app import app
+import json
+
 
 @pytest.fixture
 def client():
@@ -8,16 +10,14 @@ def client():
 def test_ping(client):
     resp = client.get('/ping')
     assert resp.status_code == 200
-    assert resp.json == {"message": "Hi there, I'm working!!"}
-    
+    assert resp.json == {"message": "Hi there, I'm working with the new API!!"}
+
 def test_predict(client):
-    test_data = {
-        "Gender": "Male",
-        "Married": "Unmarried",
-        "Credit_History": "Unclear Debts",
-        "ApplicantIncome": "100000",
-        "LoanAmount": "2000000"
-    }
-    resp = client.post('/predict', json = test_data)
+    test_data = {"Gender":"Male", 
+    "Married":"Unmarried",
+    "Credit_History" : "Unclear Debts",
+    "ApplicantIncome":100000,
+    "LoanAmount":2000000}
+    resp = client.post("/predict", json=test_data)
     assert resp.status_code == 200
-    assert resp.json == {"loan_approval_status": 'Accepted',}
+    assert resp.json == {'loan_approval_status': 'Rejected'}
